@@ -1,9 +1,19 @@
-export const fakeQuestions = [
-    
-    
-    
+export const ActionType = {
+    SOLVED_PUZZLE: 'SOLVED_PUZZLE',
+    OPTION_SELECTED: 'OPTION_SELECTED',
+    ANSWER_SELECTED: 'ANSWER_SELECTED',
+    RESET_QUESTION_STATE: 'RESET_QUESTION_STATE',
+    RESET_PUZZLE_STATE: 'RESET_PUZZLE_STATE',
+    PUZZLE_SELECTION_START: 'PUZZLE_SELECTION_START',
+    PUZZLE_SELECTION_END: 'PUZZLE_SELECTION_END',
+    PUZZLE_SELECTION_PROGRESS: 'PUZZLE_SELECTION_PROGRESS'
+} as const
 
-]
+export const Direction = {
+    HORIZONTAL: 'Horizontal',
+    VERTICAL: 'Vertical',
+    DIAGONAL: 'Diagonal'
+}
 
 export const questionCards = [
     {
@@ -32,7 +42,7 @@ export const questionCards = [
                 }
             },
         ],
-        
+
     },
     {
         heading: 'Dark Blue',

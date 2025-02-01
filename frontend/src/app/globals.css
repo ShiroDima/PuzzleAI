@@ -67,6 +67,6 @@ body {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground w-dvw h-dvh;
+    @apply bg-background text-foreground w-dvw h-dvh p-5;
   }
 }
