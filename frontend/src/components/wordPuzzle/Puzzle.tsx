@@ -134,7 +134,7 @@ const PuzzleRow = ({row, rowIndex, updateClickCount}: PuzzleRowProps) => {
 
 const Puzzle = () => {
     const [clickCount, setClickCount] = useState<number>(0)
-    const {state: {puzzleInfo: {puzzle}}} = useGameInfo()
+    const {state: {puzzle}} = useGameInfo()
 
     return (
         <>

@@ -25,7 +25,7 @@ interface InputProps {
 
 const FillInInput = ({questionString, option, questionNumber, isQuestionSolved}: InputProps) => {
     const {state: {answerSelected: {isAnswerSelected, option: optionValue, question}}} = useGameInfo()
-    let splitQuestion = questionString.split("__")
+    let splitQuestion = questionString.split("____")
     const [value, setValue] = useState<string>('')
 
     useEffect(() => {
@@ -36,7 +36,7 @@ const FillInInput = ({questionString, option, questionNumber, isQuestionSolved}:
     }, [isAnswerSelected])
 
     return (
-        <span className='text-sm flex flex-wrap leading-6 gap-2 justify-start'>
+        <span className='text-sm flex flex-wrap leading-8 gap-2 justify-start max-h-24 h-14'>
             <p className='w-full'>
                 {splitQuestion[0].trim()}
                 <input 
@@ -130,7 +130,7 @@ const FillInQuestion = ({question: {question, num, answer, options}, setClickCou
     }, [solved])
 
     return (
-        <div className='flex flex-col gap-5 w-full'>
+        <div className='flex flex-col gap-2 w-full'>
             <div>
                 <div className='flex gap-4 items-center'>
                     <span>
@@ -139,7 +139,7 @@ const FillInQuestion = ({question: {question, num, answer, options}, setClickCou
                     <FillInInput isQuestionSolved={isFrozen} questionString={question} option={options} questionNumber={num}/>
                 </div> 
             </div>
-            <div className='flex gap-10'>
+            <div className='flex gap-1 w-fit flex-wrap'>
                 {Object.keys(options).map((val, idx) => {
                     return (
                         <FillInButton isQuestionSolved={isFrozen} updateClickCount={() => setClickCount(prev => prev + 1)} key={idx} questionNumber={num} answer={answer} optionLetter={val as 'A' | 'B' | 'C' | 'D'} optionValue={options[val as keyof Options] as string}>

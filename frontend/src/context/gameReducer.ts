@@ -2,7 +2,8 @@ import { questionCards } from "../lib/constants";
 import { ActionType } from "../lib/constants";
 
 export const INITIAL_STATE: StateInterface = {
-    cardInfo: questionCards,
+    cardInfo: [],
+    puzzle: [],
     answerSelected: {
         isAnswerSelected: false,
         question: null,
@@ -11,88 +12,6 @@ export const INITIAL_STATE: StateInterface = {
         currAnswer: ''
     },
     puzzleInfo: {
-        puzzle: [
-            [
-                "M",
-                "T",
-                "H",
-                "A",
-                "V",
-                "E",
-                "Y",
-                "R",
-            ],
-            [
-                "Q",
-                "R",
-                "A",
-                "I",
-                "N",
-                "B",
-                "O",
-                "W",
-            ],
-            [
-                "K",
-                "X",
-                "D",
-                "I",
-                "G",
-                "I",
-                "V",
-                "E",
-            ],
-            [
-                "A",
-                "H",
-                "C",
-                "K",
-                "H",
-                "O",
-                "U",
-                "S",
-            ],
-            [
-                "R",
-                "A",
-                "G",
-                "U",
-                "I",
-                "T",
-                "A",
-                "R",
-            ],
-            [
-                "E",
-                "J",
-                "V",
-                "U",
-                "L",
-                "P",
-                "Y",
-                "W",
-            ],
-            [
-                "L",
-                "C",
-                "P",
-                "T",
-                "R",
-                "E",
-                "E",
-                "F",
-            ],
-            [
-                "E",
-                "H",
-                "I",
-                "U",
-                "J",
-                "L",
-                "J",
-                "K",
-            ],
-        ],
         position: {
             initialPosition: null,
             currentPosition: null,
@@ -199,6 +118,13 @@ export const gameReducer = (state: StateInterface, action: Action): StateInterfa
             return {
                 ...state,
                 answerSelected: INITIAL_STATE.answerSelected
+            }
+
+        case ActionType.GAME_DATA_CREATED:
+            return {
+                ...state,
+                puzzle: action.payload.puzzle,
+                cardInfo: action.payload.cardInfo
             }
         
         case ActionType.PUZZLE_SELECTION_PROGRESS:

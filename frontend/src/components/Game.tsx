@@ -5,25 +5,32 @@ import Puzzle from "./wordPuzzle/Puzzle"
 import { questionCards } from "@/lib/constants"
 import { useState } from "react"
 import UserAlert from "./UserAlert"
+import { Skeleton } from '@/components/ui/skeleton';
+
 
 const Game = () => {
-    const {state} = useGameInfo()
+    const {state: {cardInfo, puzzle}} = useGameInfo()
     const [clickCount, setClickCount] = useState<number>(0)
     return (
-        <>
-            <div className='grid static grid-cols-3 gap-5 w-[90%] h-[90%] grid-rows-2 auto-rows-[200px]'>
-                {questionCards.map((card, idx) => {
-                    return (
-                        <WordSelect setClickCount={setClickCount} key={idx} colorHeading={card.heading} questions={card.questions}>
-                            {clickCount === 2 && <UserAlert resetClickCount={() => setClickCount(0)} desc={'Please check the puzzle for the selected word and solve it before proceeding to another question'} />}
-                        </WordSelect>
-                    )
-                })}
-                <Puzzle />
-                
-            </div>
+        <div className='w-full h-full'>
+            {
+                cardInfo.length !== 0 && puzzle.length !== 0 
+                ? <div className='grid static grid-cols-3 gap-5 w-[90%] h-[90%] grid-rows-[400px_400px] auto-rows-max '>
+                        {cardInfo.map((card, idx) => {
+                            return (
+                                <WordSelect setClickCount={setClickCount} key={idx} colorHeading={card.heading} questions={card.questions} color={card.color}>
+                                    {clickCount === 2 && <UserAlert resetClickCount={() => setClickCount(0)} desc={'Please check the puzzle for the selected word and solve it before proceeding to another question'} />}
+                                </WordSelect>
+                            )
+                        })}
+                        <Puzzle />
+                        
+                    </div>
+                :
+                <Skeleton className='w-full h-full' />
+            }
             
-        </>
+        </div>
     )
 }
 

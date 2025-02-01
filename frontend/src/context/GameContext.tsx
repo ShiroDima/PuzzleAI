@@ -14,7 +14,8 @@ const GameContext = createContext<GameContextType>({
     selectAnswer: () => {},
     resetPuzzleState: () => {},
     resetQuestionState: () => {},
-    solvePuzzle: () => {}
+    solvePuzzle: () => {},
+    setGameData: () => {}
 })
 
 
@@ -90,6 +91,15 @@ const GameProvider = ({children}: {children: ReactNode}) => {
             type: ActionType.SOLVED_PUZZLE,
         })
     }
+
+    const setGameData = (cardInfo: CardInfo[], puzzle: string[][]) => {
+        console.info(ActionType.GAME_DATA_CREATED,)
+
+        dispatch({
+            type: ActionType.GAME_DATA_CREATED,
+            payload: {cardInfo, puzzle }
+        })
+    }
     
     const value = {
         state,
@@ -100,7 +110,8 @@ const GameProvider = ({children}: {children: ReactNode}) => {
         selectAnswer,
         resetPuzzleState,
         resetQuestionState,
-        solvePuzzle
+        solvePuzzle,
+        setGameData
     }
 
     return (
