@@ -5,7 +5,7 @@ from contextlib import asynccontextmanager
 
 from backend.middleware import LoggingMiddleware
 from backend.schema import Game, FillInQuestion, Puzzle
-from backend.game import new_game
+from backend.game import new_game, gen_new_game
 
 
 @asynccontextmanager
@@ -32,8 +32,8 @@ def index() -> RedirectResponse:
 
 
 @app.get("/game")
-async def get_new_game() -> Game:
-    response = await new_game()
+async def get_new_game(difficulty: str) -> Game:
+    response = await gen_new_game(difficulty)
 
     # print(response)
 

@@ -3,8 +3,8 @@
 import axios from "axios"
 
 
-const startNewGame = async () => {
-    const {data} = await axios.get('http://127.0.0.1:8000/game')
+const startNewGame = async (mode: string) => {
+    const {data} = await axios.get(`http://127.0.0.1:8000/game?difficulty=${mode}`)
 
     return data
 }

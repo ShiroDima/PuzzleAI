@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, ReactNode, useContext, useReducer } from "react";
+import { createContext, ReactNode, useContext, useReducer, useState } from "react";
 import {gameReducer, INITIAL_STATE } from "./gameReducer";
 import { ActionType } from "@/lib/constants";
 
@@ -15,12 +15,17 @@ const GameContext = createContext<GameContextType>({
     resetPuzzleState: () => {},
     resetQuestionState: () => {},
     solvePuzzle: () => {},
-    setGameData: () => {}
+    setGameData: () => {},
+    changeDifficulty: () => {},
+    isGameSet: false,
+    setIsGameSet: () => {},
+    resetGameData: () => {}
 })
 
 
 const GameProvider = ({children}: {children: ReactNode}) => {
     const [state, dispatch] = useReducer(gameReducer, INITIAL_STATE)
+    const [isGameSet, setIsGameSet] = useState<boolean>(false)
 
     const selectOption = (questionNumber: number, option: 'A' | 'B' | 'C' | 'D' | null, isAnswerSelected: boolean, answer: string) => {
         console.info(ActionType.OPTION_SELECTED)
@@ -100,6 +105,27 @@ const GameProvider = ({children}: {children: ReactNode}) => {
             payload: {cardInfo, puzzle }
         })
     }
+
+    const changeDifficulty = (difficulty: string) => {
+        console.info(ActionType.SELECT_DIFFICULTY, difficulty)
+        dispatch({
+            type: ActionType.SELECT_DIFFICULTY,
+            payload: { difficulty }
+        })
+        resetPuzzleState()
+        resetQuestionState()
+        setIsGameSet(false)
+    }
+
+    const resetGameData = () => {
+        console.log(ActionType.GAME_RESET)
+
+        dispatch({
+            type: ActionType.GAME_RESET
+        })
+
+        isGameSet ? setIsGameSet(false) : null
+    }
     
     const value = {
         state,
@@ -111,7 +137,11 @@ const GameProvider = ({children}: {children: ReactNode}) => {
         resetPuzzleState,
         resetQuestionState,
         solvePuzzle,
-        setGameData
+        setGameData,
+        changeDifficulty,
+        isGameSet,
+        setIsGameSet,
+        resetGameData
     }
 
     return (

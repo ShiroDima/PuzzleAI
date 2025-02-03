@@ -2,7 +2,7 @@
 import { useGameInfo } from "@/context/GameContext"
 import WordSelect from "./wordSelect/wordQuestion"
 import Puzzle from "./wordPuzzle/Puzzle"
-import { questionCards } from "@/lib/constants"
+// import { questionCards } from "@/lib/constants"
 import { useState } from "react"
 import UserAlert from "./UserAlert"
 import { Skeleton } from '@/components/ui/skeleton';
@@ -15,7 +15,7 @@ const Game = () => {
         <div className='w-full h-full'>
             {
                 cardInfo.length !== 0 && puzzle.length !== 0 
-                ? <div className='grid static grid-cols-3 gap-5 w-[90%] h-[90%] grid-rows-[400px_400px] auto-rows-max '>
+                ? <div className='grid static grid-cols-3 gap-5 w-full h-[90%] grid-rows-[400px_400px] auto-rows-max '>
                         {cardInfo.map((card, idx) => {
                             return (
                                 <WordSelect setClickCount={setClickCount} key={idx} colorHeading={card.heading} questions={card.questions} color={card.color}>

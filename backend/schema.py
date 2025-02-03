@@ -38,28 +38,60 @@ class Question(BaseModel):
 
 
 class Color(BaseModel):
+    """
+    Start and end colors for a two color gradient.
+    The value is in tailwindCSS format E.G cyan-500, blue-400
+
+    Make sure to pick colors that make beautiful gradients
+    """
+
     start: str = Field(
-        description="Starting part of the color gradient. THe value is in hexadecimal, and should be a color matching the card heading."
+        description="Starting part of the color gradient. The value is in tailwindCSS format E.G cyan-500, blue-400, and should be a color matching the card heading."
     )
     end: str = Field(
-        description="Ending part of the color gradient. THe value is in hexadecimal, and should be a color matching the card heading."
+        description="Ending part of the color gradient. The value is in tailwindCSS format E.G cyan-500, blue-400, and should be a color matching the card heading."
     )
 
 
 class CardInfo(BaseModel):
-    heading: str = Field(description="A Title. It must be the name of a color.")
+    """
+    Questions should be 2 in number E.G Question 1, Question 2
+    Colors should be in tailwindCSS format E.G cyan-500, blue-400.
+    Title must be one of the following: Red, Blue, Green, Red, Yellow
+    """
+
+    heading: str = Field(
+        description="Title. Must be one of the following: Red, Blue, Green, Red, Yellow"
+    )
     questions: list[Question] = Field(
-        description="List of 2 questions generated for a user to attempt."
+        description="List of 2 questions generated for a user to attempt. This MUST contain 2 and only 2 questions. Nothing more, nothing less"
     )
     color: Color = Field(
-        description="Color gradient based on the heading color that is assigned. Must be in hexadecimal value"
+        description="""
+                    Color gradient based on the heading color that is assigned. Must be in tailwind CSS format for colors. E.G cyan-500, blue-400.
+
+                    DO NOT GIVE HEXADECIMAL VALUES FOR THE COLOR.
+
+                    The color passed here MUST depend on the color that is chosen for the title field. Do NOT pass a color here if it does not match the title.
+                    E.G title = 'Blue' color = 'blue-500'
+
+                    Make sure to pick colors that make beautiful gradients
+                    """
     )
 
 
 class FillInQuestion(BaseModel):
+    """
+    A list of 5 elements because each element contains 2 questions
+    """
+
     card_infos: list[CardInfo] = Field(
-        description="List of 10 elements. The number of each question must continue from where the last one stopped."
+        description="List of 5 elements. The number of each question must continue from where the last one stopped."
     )
+
+
+class Verbs(BaseModel):
+    verbs: list[str] = Field(description="List of 10 verbs that will be generated")
 
 
 class Puzzle(BaseModel):

@@ -56,7 +56,7 @@ const FillInButton = ({children, isQuestionSolved, answer, optionValue, optionLe
     const [isClicked, setIsClicked] = useState<boolean>(false)
     const [isAnswer, setIsAnswer] = useState<boolean>(false)
     const {state: {answerSelected}, selectOption, selectAnswer} = useGameInfo()
-    const [[answerLetter, answerVal]] = Object.entries(answer)
+    const [[answerLetter, answerVal]] = Object.entries(answer).filter((val) => val[1] !== null)
 
     // Check if there is a previously selected answer
     // If there is, check if the question it is for, is the same as the one for this button that is clicked.
@@ -98,7 +98,8 @@ const FillInButton = ({children, isQuestionSolved, answer, optionValue, optionLe
         setIsAnswer(optionLetter===answerLetter)
         selectOption(questionNumber, optionLetter, optionLetter===answerLetter, optionValue)
         if(optionLetter===answerLetter){
-            // selectAnswer
+            console.log(`Option Letter - ${optionLetter} | Answer Letter - ${answerLetter} | Answer selected - ${answerVal}`)
+            console.log(answer)
             selectAnswer(answerVal)
         }
     }

@@ -86,7 +86,6 @@ const PuzzleButton = ({letter, row, col, updateClickCount}: PuzzleButtonProps) =
 
     const handleSelectionEnd: MouseEventHandler<HTMLButtonElement> = (event) => {
         event.preventDefault()
-        console.log(`CURRENT WORD - ${currAnswer}`)
         if(currAnswer !== selectedWords.toLowerCase()) {
             selectedButtons.forEach(pos => {
                 let key = `${pos.row}, ${pos.col}`
@@ -102,12 +101,13 @@ const PuzzleButton = ({letter, row, col, updateClickCount}: PuzzleButtonProps) =
         }
         endPuzzleSelection()
         
-        console.log('Puzzle selection is done')
+        // console.log('Puzzle selection is done')
+        console.log(`CURRENT WORD - ${currAnswer} SELECTED WORD - ${selectedWords}`)
     }
     
     return (
         <Button 
-            className={cn('bg-white text-black hover:bg-slate-400 w-fit', {
+            className={cn('bg-white text-black hover:bg-slate-400 flex place-content-center w-full', {
                 'bg-red-500 hover:bg-red-500': isSelected && !isSolveInProgess,
                 'bg-green-500 hover:bg-green-500': isSelected
             })}
@@ -122,7 +122,7 @@ const PuzzleButton = ({letter, row, col, updateClickCount}: PuzzleButtonProps) =
 
 const PuzzleRow = ({row, rowIndex, updateClickCount}: PuzzleRowProps) => {
     return (
-        <div className='grid grid-cols-8 gap-2'>
+        <div className='grid grid-cols-10 gap-1'>
             {row.map((r, i) => {
                 return (
                     <PuzzleButton updateClickCount={updateClickCount} row={rowIndex} col={i} key={i} letter={r} />
@@ -138,8 +138,8 @@ const Puzzle = () => {
 
     return (
         <>
-            <Card className='col-span-1 flex place-content-center'>
-                <CardContent className="w-full h-full p-2 grid grid-rows-8 gap-2 ">
+            <Card className='col-span-1 flex place-content-center bg-linear-to-r from-cyan-500 to-blue-500'>
+                <CardContent className="w-full h-full p-2 grid grid-rows-10 gap-1">
                     {puzzle.map((row, idx) => {
                         return (
                             <PuzzleRow key={idx} updateClickCount={() => setClickCount(prev => prev+1)} row={row} rowIndex={idx} />

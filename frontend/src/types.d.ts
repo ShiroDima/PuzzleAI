@@ -45,16 +45,19 @@ type PuzzleInfo = {
     selectedButtons: Position[]
 }
 
+type QuestionInfo = {
+    isAnswerSelected: boolean,
+    question: number | null,
+    option: 'A' | 'B' | 'C' | 'D' | null
+    prevOption: 'A' | 'B' | 'C' | 'D' | null,
+    currAnswer: string
+}
+
 interface StateInterface {
     cardInfo: CardInfo[],
     puzzle: string[][],
-    answerSelected: {
-        isAnswerSelected: boolean,
-        question: number | null,
-        option: 'A' | 'B' | 'C' | 'D' | null
-        prevOption: 'A' | 'B' | 'C' | 'D' | null,
-        currAnswer: string
-    }
+    difficulty: string
+    answerSelected: QuestionInfo
     puzzleInfo: PuzzleInfo
 }
 
@@ -67,7 +70,9 @@ const ActionType = {
     PUZZLE_SELECTION_PROGRESS: 'PUZZLE_SELECTION_PROGRESS',
     RESET_QUESTION_STATE: 'RESET_QUESTION_STATE',
     RESET_PUZZLE_STATE: 'RESET_PUZZLE_STATE',
-    GAME_DATA_CREATED: 'GAME_DATA_CREATED'
+    GAME_DATA_CREATED: 'GAME_DATA_CREATED',
+    SELECT_DIFFICULTY: 'SELECT_DIFFICULTY',
+    GAME_RESET: 'GAME_RESET'
 } as const;
 
 // export {ActionType}
@@ -82,6 +87,8 @@ type Action =
     | {type: typeof ActionType.RESET_PUZZLE_STATE}
     | {type: typeof ActionType.RESET_QUESTION_STATE}
     | {type: typeof ActionType.GAME_DATA_CREATED; payload: {cardInfo: CardInfo[], puzzle: string[][]}}
+    | {type: typeof ActionType.SELECT_DIFFICULTY; payload: {difficulty: string}}
+    | {type: typeof ActionType.GAME_RESET}
 
 type GameContextType = {
     state: StateInterface,
@@ -94,4 +101,8 @@ type GameContextType = {
     resetQuestionState: () => void,
     solvePuzzle: () => void,
     setGameData: (cardInfo: CardInfo[], puzzle: string[][]) => void
+    changeDifficulty: (difficulty: string) => void,
+    isGameSet: boolean,
+    setIsGameSet: Dispatch<SetStateAction<boolean>>,
+    resetGameData: () => void
 }

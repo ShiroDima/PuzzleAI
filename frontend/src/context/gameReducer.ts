@@ -1,9 +1,10 @@
-import { questionCards } from "../lib/constants";
+// import { questionCards } from "../lib/constants";
 import { ActionType } from "../lib/constants";
 
 export const INITIAL_STATE: StateInterface = {
     cardInfo: [],
     puzzle: [],
+    difficulty: 'kindergarten',
     answerSelected: {
         isAnswerSelected: false,
         question: null,
@@ -31,6 +32,13 @@ export const gameReducer = (state: StateInterface, action: Action): StateInterfa
     // const {action} = payload
 
     switch(action.type){
+        case ActionType.SELECT_DIFFICULTY:
+            let {difficulty} = action.payload
+            return {
+                ...state,
+                difficulty
+            }
+
         case ActionType.OPTION_SELECTED:
             let {question, option} = action.payload
             return {
@@ -125,6 +133,13 @@ export const gameReducer = (state: StateInterface, action: Action): StateInterfa
                 ...state,
                 puzzle: action.payload.puzzle,
                 cardInfo: action.payload.cardInfo
+            }
+        
+        case ActionType.GAME_RESET:
+            return {
+                ...state,
+                puzzle: [],
+                cardInfo: []
             }
         
         case ActionType.PUZZLE_SELECTION_PROGRESS:
