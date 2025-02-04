@@ -1,5 +1,7 @@
 from backend.ai import get_v1_chains, get_fiq_chain
 from backend.schema import FillInQuestion, Puzzle, Game, Verbs
+from backend.storage import GameData
+from backend.game.utils import check_db_for_game, SampleScheduler
 from .generate_grid import PuzzleGrid
 
 from loguru import logger
@@ -9,6 +11,8 @@ from langchain_core.runnables import (
     RunnableParallel,
     RunnablePassthrough,
 )
+
+from random import choice, choices
 
 
 async def new_game():
@@ -37,26 +41,21 @@ async def new_game():
     return Game(card_info=fill_in_questions, puzzle_info=puzzle)
 
 
-async def gen_new_game(mode: str = "kindergaten"):
+async def gen_new_game(mode: str = "kindergaten") -> Game:
+
+    if not await SampleScheduler(decay_factor=1e-2).should_use_ai(mode):
+        game_data = await check_db_for_game(mode)
+
+        if game_data:
+            return game_data.game
+
     agents = get_fiq_chain()
 
     async def get_verbs(mode: str) -> list[str]:
         return (await agents["generate_verbs"].ainvoke({"class": mode})).verbs
 
-    # verbs: Verbs = await agents["generate_verbs"].ainvoke({"class": mode})
-
-    # logger.info({"Verbs": verbs.verbs})
-
-    # fill_in_questions: FillInQuestion = await agents["generate_fiq"].ainvoke(
-    #     {"words": verbs.verbs}
-    # )
-
     try:
         puzzle_grid = PuzzleGrid(grid_size=(10, 10), max_word_length=10)
-
-        # puzzle_grid.place_words()
-
-        # puzzle = puzzle_grid.grid
 
         agent = RunnableLambda(get_verbs) | {
             "words": RunnablePassthrough(),
@@ -67,11 +66,17 @@ async def gen_new_game(mode: str = "kindergaten"):
         result = await agent.ainvoke(mode)
 
         # return Game(card_info=fill_in_questions, puzzle_info=puzzle)
-        return Game(card_info=result["fiq"], puzzle_info=result["puzzle"])
+        game = Game(card_info=result["fiq"], puzzle_info=result["puzzle"])
+
+        game_data = GameData(game=game, category=mode)
+
+        await game_data.insert()
+
+        return game
     except AssertionError as error:
         logger.exception(
             {
                 "Error": error.__class__.__name__,
-                "message": "Search Words longer than 8 letters.",
+                "message": "Search Words longer than 10 letters.",
             }
         )

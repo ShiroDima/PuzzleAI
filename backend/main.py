@@ -6,14 +6,16 @@ from contextlib import asynccontextmanager
 from backend.middleware import LoggingMiddleware
 from backend.schema import Game, FillInQuestion, Puzzle
 from backend.game import new_game, gen_new_game
+from backend.storage import init
 
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
+    await init()
     yield
 
 
-app = FastAPI()
+app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
